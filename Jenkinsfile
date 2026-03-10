@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     stages {
-
         
         stage('Load Environment') {
             steps {
@@ -28,16 +27,19 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
+         stage('Parallel Checks') {
+            parallel {
 
-        stage('Static Analysis - SonarQube') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'mvn sonar:sonar'
+                stage('Unit Tests') {
+                    steps {
+                        sh 'mvn test'
+                    }
+                }
+
+                stage('Static Analysis') {
+                    steps {
+                        sh 'mvn verify sonar:sonar'
+                    }
                 }
             }
         }
