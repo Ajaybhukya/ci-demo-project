@@ -6,8 +6,9 @@ pipeline {
         stage('Load Environment') {
             steps {
                 withCredentials([file(credentialsId: 'timesheet-env-file', variable: 'ENV_FILE')]) {
-                     sh '''
-                cat $ENV_FILE > .env
+                    sh '''
+                        cp $ENV_FILE .env
+                        cat .env
                     '''
                 }
             }
