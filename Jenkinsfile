@@ -16,6 +16,12 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
         stage('Static Analysis - SonarQube') {
             steps {
                 withSonarQubeEnv('SonarQube') {
