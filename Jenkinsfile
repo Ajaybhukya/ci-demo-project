@@ -16,5 +16,13 @@ pipeline {
             }
         }
 
+        stage('Static Analysis - SonarQube') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
     }
 }
