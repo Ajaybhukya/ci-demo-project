@@ -6,9 +6,8 @@ pipeline {
         stage('Load Environment') {
             steps {
                 withCredentials([file(credentialsId: 'timesheet-env-file', variable: 'ENV_FILE')]) {
-                    sh '''
-                        cp $ENV_FILE .env
-                        cat .env
+                     sh '''
+                cat $ENV_FILE > .env
                     '''
                 }
             }
@@ -36,9 +35,11 @@ pipeline {
                     }
                 }
 
-                stage('Static Analysis') {
+                stage('Static Analysis - SonarQube') {
                     steps {
-                        sh 'mvn verify sonar:sonar'
+                        withSonarQubeEnv('SonarQube') {
+                            sh 'mvn sonar:sonar'
+                        }
                     }
                 }
             }
